@@ -14,9 +14,9 @@ const JoinRoomPage = (props) => {
   useEffect(() => {
     const isRoomHost = new URLSearchParams(search).get("host");
     if (isRoomHost) {
-      // seeting in our redux store that user is host
       setIsRoomHostAction(true);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
