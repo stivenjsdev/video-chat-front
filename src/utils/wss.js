@@ -4,7 +4,7 @@ const SERVER = "http://localhost:5002";
 
 let socket = null;
 
-export const connectWithScoketIOServer = () => {
+export const connectWithSocketIOServer = () => {
   socket = io(SERVER);
 
   socket.on("connect", () => {
