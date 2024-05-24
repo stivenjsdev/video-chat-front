@@ -280,6 +280,7 @@
   padding: 10px;
   border-radius: 25px;
   transition: 0.3s;
+  cursor: pointer;
 }
 
 .video_button_image:hover {
@@ -299,6 +300,7 @@
   background: #fc5d5b;
   box-shadow: 0px 3px 30px rgba(252, 93, 91, 0.1);
   transition: 0.2s;
+  cursor: pointer;
 }
 
 .video_button_end:hover {
