@@ -1,7 +1,7 @@
 import React from "react";
 
 const VideoSection = () => {
-  return <div>VideoSection</div>;
+  return <div className="video_section_container">VideoSection</div>;
 };
 
 export default VideoSection;
