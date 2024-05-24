@@ -16,6 +16,7 @@ const dummyParticipants = [
 ];
 
 const SingleParticipant = (props) => {
+  // eslint-disable-next-line no-unused-vars
   const { identity, lastItem, participant } = props;
 
   return (
