@@ -13,6 +13,7 @@ export const getLocalPreviewAndInitRoomConnection = async (
   navigator.mediaDevices
     .getUserMedia(defaultConstraints)
     .then((stream) => {
+      console.log('successfully received local stream');
       localStream = stream;
       showLocalVideoPreview(localStream);
       // isRoomHost ? wss.createNewRoom(identity) : wss.joinRoom(roomId, identity);
