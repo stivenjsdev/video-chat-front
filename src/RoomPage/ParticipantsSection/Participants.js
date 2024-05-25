@@ -1,19 +1,5 @@
 import React from "react";
-
-const dummyParticipants = [
-  {
-    identity: "Jake",
-  },
-  {
-    identity: "Anna",
-  },
-  {
-    identity: "Marek",
-  },
-  {
-    identity: "Darius",
-  },
-];
+import { connect } from "react-redux";
 
 const SingleParticipant = (props) => {
   // eslint-disable-next-line no-unused-vars
@@ -27,14 +13,14 @@ const SingleParticipant = (props) => {
   );
 };
 
-const Participants = () => {
+const Participants = ({ participants }) => {
   return (
     <div className="participants_container">
-      {dummyParticipants.map((participant, index) => {
+      {participants.map((participant, index) => {
         return (
           <SingleParticipant
             key={participant.identity}
-            lastItem={dummyParticipants.length === index + 1}
+            lastItem={participants.length === index + 1}
             participant={participant}
             identity={participant.identity}
           />
@@ -44,4 +30,10 @@ const Participants = () => {
   );
 };
 
-export default Participants;
+const mapStoreStateToProps = (state) => {
+  return {
+    ...state,
+  };
+};
+
+export default connect(mapStoreStateToProps)(Participants);
