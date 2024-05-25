@@ -24,7 +24,12 @@ export const getLocalPreviewAndInitRoomConnection = async (
       //dispatch an action to hide overlay
       store.dispatch(setShowOverlay(false));
 
-      isRoomHost ? wss.createNewRoom(identity) : wss.joinRoom(identity, roomId);
+      // isRoomHost ? wss.createNewRoom(identity) : wss.joinRoom(identity, roomId);
+      if (isRoomHost) {
+        wss.createNewRoom(identity);
+      } else {
+        wss.joinRoom(identity, roomId);
+      }
     })
     .catch((err) => {
       console.log(
