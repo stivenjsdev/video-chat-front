@@ -66,7 +66,7 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
     stream: localStream,
   });
 
-  peers[connUserSocketId].on("stream", () => {
+  peers[connUserSocketId].on("stream", (stream) => {
     console.log("new stream came");
 
     addStream(stream, connUserSocketId);
