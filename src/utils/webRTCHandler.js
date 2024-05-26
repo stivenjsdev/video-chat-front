@@ -1,6 +1,7 @@
-import { setShowOverlay } from '../store/actions';
-import store from '../store/store';
-import * as wss from './wss';
+import Peer from "simple-peer";
+import { setShowOverlay } from "../store/actions";
+import store from "../store/store";
+import * as wss from "./wss";
 
 const defaultConstraints = {
   audio: true,
@@ -17,7 +18,7 @@ export const getLocalPreviewAndInitRoomConnection = async (
   navigator.mediaDevices
     .getUserMedia(defaultConstraints)
     .then((stream) => {
-      console.log('successfully received local stream');
+      console.log("successfully received local stream");
       localStream = stream;
       showLocalVideoPreview(localStream);
 
@@ -43,6 +44,24 @@ const showLocalVideoPreview = (stream) => {
   // show local video preview
 };
 
+let peers = {};
+
+const getConfiguration = () => {
+  return {
+    iceServers: [
+      {
+        urls: "stun:stun.l.google.com:19302",
+      },
+    ],
+  };
+};
+
 export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
-  
-}
+  const configuration = getConfiguration();
+
+  peers[connUserSocketId] = new Peer({
+    initiator: isInitiator,
+    config: configuration,
+    stream: localStream,
+  });
+};
