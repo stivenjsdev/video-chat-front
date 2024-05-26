@@ -29,10 +29,18 @@ export const connectWithSocketIOServer = () => {
     const { connUserSocketId } = data;
 
     webRTCHandler.prepareNewPeerConnection(connUserSocketId, false);
+
+    // inform the user which just join the room that we have prepared for incoming connection
+    socket.emit("conn-init", { connUserSocketId: connUserSocketId });
   });
 
   socket.on("conn-signal", (data) => {
     webRTCHandler.handleSignalingData(data);
+  });
+
+  socket.on("con-init", (data) => {
+    const { connUserSocketId } = data;
+    webRTCHandler.prepareNewPeerConnection(connUserSocketId, true);
   });
 };
 
