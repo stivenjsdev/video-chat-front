@@ -5,7 +5,10 @@ import * as wss from "./wss";
 
 const defaultConstraints = {
   audio: true,
-  video: true,
+  video: {
+    width: "480",
+    height: "360",
+  },
 };
 
 let localStream;
@@ -22,14 +25,14 @@ export const getLocalPreviewAndInitRoomConnection = async (
       localStream = stream;
       showLocalVideoPreview(localStream);
 
-      //dispatch an action to hide overlay
+      // dispatch an action to hide overlay
       store.dispatch(setShowOverlay(false));
 
       // isRoomHost ? wss.createNewRoom(identity) : wss.joinRoom(identity, roomId);
       if (isRoomHost) {
-        wss.createNewRoom(identity);
+        wss.createNewRoom(identity)
       } else {
-        wss.joinRoom(identity, roomId);
+        wss.joinRoom(identity, roomId)
       }
     })
     .catch((err) => {
@@ -86,7 +89,33 @@ export const handleSignalingData = (data) => {
   peers[data.connUserSocketId].signal(data.signal);
 };
 
-/////////////////////// UI Videos //////////////////////
+export const removePeerConnection = (data) => {
+  try {
+    const { socketId } = data;
+    const videoContainer = document.getElementById(socketId);
+    const videoEl = document.getElementById(`${socketId}-video`);
+  
+    if (videoContainer && videoEl) {
+      const tracks = videoEl.srcObject.getTracks();
+  
+      tracks.forEach((t) => t.stop());
+  
+      videoEl.srcObject = null;
+      videoContainer.removeChild(videoEl);
+  
+      videoContainer.parentNode.removeChild(videoContainer);
+  
+      if (peers[socketId]) {
+        peers[socketId].destroy();
+      }
+      delete peers[socketId];
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+////////////////////////////////// UI Videos //////////////////////////////////
 const showLocalVideoPreview = (stream) => {
   const videosContainer = document.getElementById("videos_portal");
   videosContainer.classList.add("videos_portal_styles");
@@ -120,6 +149,14 @@ const addStream = (stream, connUserSocketId) => {
   videoElement.onloadedmetadata = () => {
     videoElement.play();
   };
+
+  videoElement.addEventListener("click", () => {
+    if (videoElement.classList.contains("full_screen")) {
+      videoElement.classList.remove("full_screen");
+    } else {
+      videoElement.classList.add("full_screen");
+    }
+  });
 
   videoContainer.appendChild(videoElement);
   videosContainer.appendChild(videoContainer);

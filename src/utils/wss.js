@@ -38,9 +38,13 @@ export const connectWithSocketIOServer = () => {
     webRTCHandler.handleSignalingData(data);
   });
 
-  socket.on("con-init", (data) => {
+  socket.on("conn-init", (data) => {
     const { connUserSocketId } = data;
     webRTCHandler.prepareNewPeerConnection(connUserSocketId, true);
+  });
+
+  socket.on("user-disconnected", (data) => {
+    webRTCHandler.removePeerConnection(data);
   });
 };
 
@@ -54,7 +58,7 @@ export const createNewRoom = (identity) => {
 };
 
 export const joinRoom = (identity, roomId) => {
-  // emit an event to server that we would to join a room
+  //emit an event to server that we would to join a room
   const data = {
     roomId,
     identity,
