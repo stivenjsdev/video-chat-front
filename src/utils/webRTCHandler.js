@@ -40,10 +40,6 @@ export const getLocalPreviewAndInitRoomConnection = async (
     });
 };
 
-const showLocalVideoPreview = (stream) => {
-  // show local video preview
-};
-
 let peers = {};
 let streams = [];
 
@@ -88,6 +84,25 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
 export const handleSignalingData = (data) => {
   //add signaling data to peer connection
   peers[data.connUserSocketId].signal(data.signal);
+};
+
+/////////////////////// UI Videos //////////////////////
+const showLocalVideoPreview = (stream) => {
+  const videosContainer = document.getElementById("videos_portal");
+  videosContainer.classList.add("videos_portal_styles");
+  const videoContainer = document.createElement("div");
+  videoContainer.classList.add("video_track_container");
+  const videoElement = document.createElement("video");
+  videoElement.autoplay = true;
+  videoElement.muted = true;
+  videoElement.srcObject = stream;
+
+  videoElement.onloadedmetadata = () => {
+    videoElement.play();
+  };
+
+  videoContainer.appendChild(videoElement);
+  videosContainer.appendChild(videoContainer);
 };
 
 const addStream = (stream, connUserSocketId) => {
