@@ -66,6 +66,18 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
     stream: localStream,
   });
 
+  peers[connUserSocketId].on("signal", (data) => {
+
+    // webRTC offer, webRTC Answer (SDP informations), ice candidates
+
+    const signalData = {
+      signal: data,
+      connUserSocketId: connUserSocketId,
+    }
+
+    wss.signalPeerData(signalData);
+  });
+
   peers[connUserSocketId].on("stream", (stream) => {
     console.log("new stream came");
 
