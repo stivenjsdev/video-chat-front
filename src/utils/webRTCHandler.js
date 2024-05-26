@@ -67,13 +67,12 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
   });
 
   peers[connUserSocketId].on("signal", (data) => {
-
     // webRTC offer, webRTC Answer (SDP informations), ice candidates
 
     const signalData = {
       signal: data,
       connUserSocketId: connUserSocketId,
-    }
+    };
 
     wss.signalPeerData(signalData);
   });
@@ -84,6 +83,11 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
     addStream(stream, connUserSocketId);
     streams = [...streams, stream];
   });
+};
+
+export const handleSignalingData = (data) => {
+  //add signaling data to peer connection
+  peers[data.connUserSocketId].signal(data.signal);
 };
 
 const addStream = (stream, connUserSocketId) => {

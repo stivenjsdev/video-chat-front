@@ -30,6 +30,10 @@ export const connectWithSocketIOServer = () => {
 
     webRTCHandler.prepareNewPeerConnection(connUserSocketId, false);
   });
+
+  socket.on("conn-signal", (data) => {
+    webRTCHandler.handleSignalingData(data);
+  });
 };
 
 export const createNewRoom = (identity) => {
