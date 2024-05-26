@@ -45,6 +45,7 @@ const showLocalVideoPreview = (stream) => {
 };
 
 let peers = {};
+let streams = [];
 
 const getConfiguration = () => {
   return {
@@ -64,4 +65,15 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
     config: configuration,
     stream: localStream,
   });
+
+  peers[connUserSocketId].on("stream", () => {
+    console.log("new stream came");
+
+    addStream(stream, connUserSocketId);
+    streams = [...streams, stream];
+  });
+};
+
+const addStream = (stream, connUserSocketId) => {
+  //display incoming stream
 };
