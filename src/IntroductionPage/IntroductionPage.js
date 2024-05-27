@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import logo from "../resources/images/logo.png";
 
 import { connect } from "react-redux";
 import { setIsRoomHost } from "../store/actions";
@@ -15,7 +14,8 @@ const IntroductionPage = ({ setIsRoomHostAction }) => {
   return (
     <div className="introduction_page_container">
       <div className="introduction_page_panel">
-        <img className="introduction_page_image" src={logo} alt="logo"></img>
+        {/* <img className="introduction_page_image" src={logo} alt="logo"></img> */}
+        <p className="logo_string">Video Chat</p>
         <ConnectingButtons />
       </div>
     </div>

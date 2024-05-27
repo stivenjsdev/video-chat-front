@@ -10,7 +10,6 @@ import { getRoomExists } from "../utils/api";
 import ErrorMessage from "./ErrorMessage";
 import JoinRoomButtons from "./JoinRoomButtons";
 import JoinRoomInputs from "./JoinRoomInputs";
-import OnlyWithAudioCheckbox from "./OnlyWithAudioCheckbox";
 
 const JoinRoomContent = (props) => {
   const {
@@ -68,10 +67,10 @@ const JoinRoomContent = (props) => {
         setNameValue={setNameValue}
         isRoomHost={isRoomHost}
       />
-      <OnlyWithAudioCheckbox
+      {/* <OnlyWithAudioCheckbox
         setConnectOnlyWithAudio={setConnectOnlyWithAudioAction}
         connectOnlyWithAudio={connectOnlyWithAudio}
-      />
+      /> */}
       <ErrorMessage errorMessage={errorMessage} />
       <JoinRoomButtons
         handleJoinRoom={handleJoinRoom}
