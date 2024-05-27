@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SwitchImg from "../../resources/images/switchToScreenSharing.svg";
+import * as webRTCHandler from '../../utils/webRTCHandler';
 import LocalScreenSharingPreview from "./LocalScreenSharingPreview";
 
 const constraints = {
@@ -15,7 +16,7 @@ const SwitchToScreenSharingButton = () => {
     if (!isScreenSharingActive) {
       let stream = null;
       try {
-        stream = await navigator.mediaDevices.getDisplayMedia();
+        stream = await navigator.mediaDevices.getDisplayMedia(constraints);
       } catch (err) {
         console.log(
           "error ocurred when trying to get an access to screen share stream"
@@ -24,16 +25,18 @@ const SwitchToScreenSharingButton = () => {
 
       if (stream) {
         setScreenSharingStream(stream);
+
+        webRTCHandler.toggleScreenShare(isScreenSharingActive, stream);
         setIsScreenSharingActive(true);
         // execute here function to switch the video track which we are sending to other user
-      } else {
-        // switch for video track from camera
-        setIsScreenSharingActive(false);
-
-        // stop screen share stream
-        setScreenSharingStream.getTracks().forEach((t) => t.stop());
-        setScreenSharingStream(null);
       }
+    } else {
+      webRTCHandler.toggleScreenShare(isScreenSharingActive);
+      setIsScreenSharingActive(false);
+
+      // stop screen share stream
+      screenSharingStream.getTracks().forEach((t) => t.stop());
+      setScreenSharingStream(null);
     }
 
     // setIsScreenSharingActive(!isScreenSharingActive);

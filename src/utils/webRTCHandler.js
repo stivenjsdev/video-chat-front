@@ -30,9 +30,9 @@ export const getLocalPreviewAndInitRoomConnection = async (
 
       // isRoomHost ? wss.createNewRoom(identity) : wss.joinRoom(identity, roomId);
       if (isRoomHost) {
-        wss.createNewRoom(identity)
+        wss.createNewRoom(identity);
       } else {
-        wss.joinRoom(identity, roomId)
+        wss.joinRoom(identity, roomId);
       }
     })
     .catch((err) => {
@@ -94,17 +94,17 @@ export const removePeerConnection = (data) => {
     const { socketId } = data;
     const videoContainer = document.getElementById(socketId);
     const videoEl = document.getElementById(`${socketId}-video`);
-  
+
     if (videoContainer && videoEl) {
       const tracks = videoEl.srcObject.getTracks();
-  
+
       tracks.forEach((t) => t.stop());
-  
+
       videoEl.srcObject = null;
       videoContainer.removeChild(videoEl);
-  
+
       videoContainer.parentNode.removeChild(videoContainer);
-  
+
       if (peers[socketId]) {
         peers[socketId].destroy();
       }
@@ -166,9 +166,39 @@ const addStream = (stream, connUserSocketId) => {
 
 export const toggleMic = (isMuted) => {
   localStream.getAudioTracks()[0].enabled = isMuted ? true : false;
-
 };
 
 export const toggleCamera = (isDisabled) => {
   localStream.getVideoTracks()[0].enabled = isDisabled ? true : false;
-}
+};
+
+export const toggleScreenShare = (
+  isScreenSharingActive,
+  screenSharingStream
+) => {
+  if (isScreenSharingActive) {
+    switchVideoTracks(localStream);
+  } else {
+    switchVideoTracks(screenSharingStream);
+  }
+};
+
+export const switchVideoTracks = (stream) => {
+  for (let socket_id in peers) {
+    for (let index in peers[socket_id].streams[0].getTracks()) {
+      for (let index2 in stream.getTracks()) {
+        if (
+          peers[socket_id].streams[0].getTracks()[index].kind ===
+          stream.getTracks()[index2].kind
+        ) {
+          peers[socket_id].replaceTrack(
+            peers[socket_id].streams[0].getTracks()[index],
+            stream.getTracks()[index2],
+            peers[socket_id].streams[0]
+          );
+          break;
+        }
+      }
+    }
+  }
+};
